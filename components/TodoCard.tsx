@@ -9,6 +9,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { PRIORITIES, STATUSES } from '@/components/constants';
 import { TodoTimer } from '@/components/TodoTimer';
 import { Todo } from '@/types/todo';
+import { useSound } from '@/context/SoundContext';
 
 interface TodoCardProps {
   todo: Todo;
@@ -23,6 +24,7 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
   const overdue = todo.status !== 'completed' && todo.dueDate && isBefore(parseISO(todo.dueDate), startOfDay(new Date()));
   const doneSubs = (todo.subtasks || []).filter(s => s.completed).length;
   const totalSubs = (todo.subtasks || []).length;
+  const { playComplete } = useSound();
 
   const drag = useDraggable({ id: todo.id, disabled: !draggable });
   const dragStyle = drag.transform ? { transform: `translate3d(${drag.transform.x}px, ${drag.transform.y}px, 0)`, zIndex: 50, opacity: 0.9 } : undefined;
@@ -34,6 +36,21 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
   };
 
   const statusColor = statusColorMap[todo.status] || '#64748b';
+
+  const toggleComplete = () => {
+    const isNowCompleted = todo.status !== 'completed';
+    if (isNowCompleted) playComplete();
+    onUpdate({
+      ...todo,
+      status: isNowCompleted ? 'completed' : 'pending',
+      completedAt: isNowCompleted ? new Date().toISOString() : null
+    });
+  };
+
+  const updateStatus = (v: string) => {
+    if (v === 'completed' && todo.status !== 'completed') playComplete();
+    onUpdate({ ...todo, status: v, completedAt: v === 'completed' ? new Date().toISOString() : todo.completedAt });
+  };
 
   return (
     <div
@@ -58,8 +75,7 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
                   <GripVertical className="w-4 h-4" />
                 </button>
               )}
-              <button onClick={() => onUpdate({ ...todo, status: todo.status === 'completed' ? 'pending' : 'completed', completedAt: todo.status === 'completed' ? null : new Date().toISOString() })}
-                className="mt-1 shrink-0">
+              <button onClick={toggleComplete} className="mt-1 shrink-0">
                 {todo.status === 'completed' ? <CheckCircle2 className="w-5 h-5 text-green-400" /> : <Circle className="w-5 h-5 text-slate-500 hover:text-green-400" />}
               </button>
               <div className="flex-1 min-w-0">
@@ -100,7 +116,7 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
             <TodoTimer todo={todo} onUpdate={onUpdate} />
           </div>
 
-          <Select value={todo.status} onValueChange={(v: any) => onUpdate({ ...todo, status: v, completedAt: v === 'completed' ? new Date().toISOString() : todo.completedAt })}>
+          <Select value={todo.status} onValueChange={updateStatus}>
             <SelectTrigger className="h-7 text-xs bg-black/40 border-zinc-800">
               <SelectValue />
             </SelectTrigger>
@@ -113,3 +129,4 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
     </div>
   );
 }
+

@@ -9,8 +9,10 @@ import {
 import {
   Plus, Trash2, Edit3, CheckCircle2, Clock,
   LayoutDashboard, ListTodo, BarChart3, Settings as SettingsIcon, Flame,
-  Target, Timer as TimerIcon, AlertTriangle, Download, Upload, Package
+  Target, Timer as TimerIcon, AlertTriangle, Download, Upload, Package,
+  Volume2, VolumeX
 } from 'lucide-react';
+import { useSound } from '@/context/SoundContext';
 import { DndContext, PointerSensor, useSensor, useSensors, closestCenter, DragEndEvent } from '@dnd-kit/core';
 
 import { Button } from '@/components/ui/button';
@@ -33,11 +35,13 @@ import { SpiderGraph } from '@/components/SpiderGraph';
 import { PriorityDonut } from '@/components/PriorityDonut';
 import { StatCard } from '@/components/StatCard';
 import { StreakCalendar } from '@/components/StreakCalendar';
+import { NavTimer } from '@/components/NavTimer';
 import { Todo } from '@/types/todo';
 
 export default function App() {
   const [state, setState] = useAppState();
   const [tab, setTab] = useState('dashboard');
+  const { isMuted, toggleMute } = useSound();
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Todo | null>(null);
   const [search, setSearch] = useState('');
@@ -173,10 +177,21 @@ export default function App() {
               <div className="text-[10px] text-zinc-500">Local-first • Offline-ready</div>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button onClick={openCreate} className="bg-green-500 hover:bg-green-600 text-slate-900 font-semibold">
-              <Plus className="w-4 h-4 mr-1" /> New Todo
-            </Button>
+          <div className="flex items-center gap-4">
+            <NavTimer />
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                className="w-9 h-9 border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800"
+                onClick={toggleMute}
+              >
+                {isMuted ? <VolumeX className="w-4 h-4 text-zinc-500" /> : <Volume2 className="w-4 h-4 text-green-400" />}
+              </Button>
+              <Button onClick={openCreate} className="bg-green-500 hover:bg-green-600 text-slate-900 shadow-lg shadow-green-500/20">
+                <Plus className="w-4 h-4 mr-1.5" />New Task
+              </Button>
+            </div>
           </div>
         </div>
       </header>
