@@ -8,9 +8,9 @@ export const PRIORITIES = [
 ];
 
 export const STATUSES = [
-  { value: 'pending', label: 'Pending', color: '#64748b' },
-  { value: 'in-progress', label: 'In Progress', color: '#06b6d4' },
-  { value: 'completed', label: 'Completed', color: '#10b981' },
+  { value: 'pending', label: 'Pending', color: '#eab308' },
+  { value: 'in-progress', label: 'In Progress', color: '#3182f6' },
+  { value: 'completed', label: 'Completed', color: '#22c55e' },
 ];
 
 export const DEFAULT_CATEGORIES = ['Work', 'Personal', 'Health', 'Learning', 'Errands'];

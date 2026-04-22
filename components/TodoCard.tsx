@@ -27,10 +27,28 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
   const drag = useDraggable({ id: todo.id, disabled: !draggable });
   const dragStyle = drag.transform ? { transform: `translate3d(${drag.transform.x}px, ${drag.transform.y}px, 0)`, zIndex: 50, opacity: 0.9 } : undefined;
 
+  const statusColorMap: Record<string, string> = {
+    'pending': '#eab308',
+    'in-progress': '#3b82f6',
+    'completed': '#22c55e'
+  };
+
+  const statusColor = statusColorMap[todo.status] || '#64748b';
+
   return (
-    <div ref={draggable ? drag.setNodeRef : undefined} style={dragStyle}>
-      <Card className="bg-[#1a3a3a] border-green-900/50 hover:border-green-500/50 transition-all">
-        <CardContent className="p-4 space-y-3">
+    <div
+      ref={draggable ? drag.setNodeRef : undefined}
+      style={dragStyle}
+      className={`transition-all duration-200 ${drag.isDragging ? 'z-50 scale-105 rotate-2 transition-none' : ''}`}
+    >
+      <Card className={`relative overflow-hidden bg-black shadow-2xl ${todo.status === 'completed' ? 'border-green-500/40' : 'border-zinc-800'}`}>
+        <div
+          className="absolute inset-0 pointer-events-none z-0"
+          style={{
+            background: `linear-gradient(145deg, ${pri.color}60 0%, rgba(34, 197, 94, 0.25) 45%, ${statusColor}50 100%)`
+          }}
+        />
+        <CardContent className="p-4 space-y-3 relative z-10">
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-start gap-2 flex-1 min-w-0">
               {draggable && (
@@ -43,8 +61,8 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
                 {todo.status === 'completed' ? <CheckCircle2 className="w-5 h-5 text-green-400" /> : <Circle className="w-5 h-5 text-slate-500 hover:text-green-400" />}
               </button>
               <div className="flex-1 min-w-0">
-                <div className={`font-medium text-sm ${todo.status === 'completed' ? 'line-through text-slate-500' : 'text-slate-100'}`}>{todo.title}</div>
-                {todo.description && <div className="text-xs text-slate-400 mt-0.5 line-clamp-2">{todo.description}</div>}
+                <div className={`font-medium text-sm transition-all ${todo.status === 'completed' ? 'line-through text-zinc-500' : 'text-slate-100'}`}>{todo.title}</div>
+                {todo.description && <div className={`text-xs mt-0.5 line-clamp-2 transition-all ${todo.status === 'completed' ? 'text-zinc-600' : 'text-slate-400'}`}>{todo.description}</div>}
               </div>
             </div>
             <div className="flex gap-1 shrink-0">
@@ -54,7 +72,8 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
           </div>
 
           <div className="flex flex-wrap gap-1.5 items-center">
-            <Badge style={{ backgroundColor: pri.color + '30', color: pri.color, border: `1px solid ${pri.color}60` }} className="text-[10px] px-1.5 py-0">{pri.label}</Badge>
+            <Badge style={{ backgroundColor: pri.color + '50', color: pri.color, border: `1px solid ${pri.color}80` }} className="text-[10px] px-1.5 py-0">{pri.label}</Badge>
+            {todo.status === 'completed' && <Badge className="text-[10px] px-1.5 py-0 bg-green-500/20 text-green-400 border border-green-500/40">DONE</Badge>}
             {todo.category && <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-green-700 text-green-300"><Tag className="w-2.5 h-2.5 mr-1" />{todo.category}</Badge>}
             {overdue && <Badge className="text-[10px] px-1.5 py-0 bg-red-900/40 text-red-300 border border-red-700"><AlertTriangle className="w-2.5 h-2.5 mr-1" />Overdue</Badge>}
             {todo.isRecurring && <Badge className="text-[10px] px-1.5 py-0 bg-cyan-900/40 text-cyan-300 border border-cyan-700"><Repeat className="w-2.5 h-2.5 mr-1" />Recurring</Badge>}
@@ -66,7 +85,7 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
               <div className="flex items-center justify-between text-[10px] text-slate-400">
                 <span>Subtasks</span><span>{doneSubs}/{totalSubs}</span>
               </div>
-              <Progress value={(doneSubs/totalSubs)*100} className="h-1" />
+              <Progress value={(doneSubs / totalSubs) * 100} className="h-1" />
             </div>
           )}
 
@@ -80,7 +99,7 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
           </div>
 
           <Select value={todo.status} onValueChange={(v: any) => onUpdate({ ...todo, status: v, completedAt: v === 'completed' ? new Date().toISOString() : todo.completedAt })}>
-            <SelectTrigger className="h-7 text-xs bg-[#0f172a] border-green-900">
+            <SelectTrigger className="h-7 text-xs bg-black/40 border-zinc-800">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
