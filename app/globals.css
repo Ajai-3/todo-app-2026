@@ -80,4 +80,32 @@
       transform: translateX(200%) skewX(-15deg);
     }
   }
+
+  /* Custom Premium Scrollbar */
+  @layer base {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #10b981 #09090b;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #09090b;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #10b981;
+      border-radius: 10px;
+      border: 2px solid #09090b;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #059669;
+    }
+  }
 }
