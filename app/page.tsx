@@ -12,7 +12,6 @@ import {
   Target, Timer as TimerIcon, AlertTriangle, Download, Upload, Package
 } from 'lucide-react';
 import { DndContext, PointerSensor, useSensor, useSensors, closestCenter, DragEndEvent } from '@dnd-kit/core';
-import JSZip from 'jszip';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,6 +32,7 @@ import { Heatmap } from '@/components/Heatmap';
 import { SpiderGraph } from '@/components/SpiderGraph';
 import { PriorityDonut } from '@/components/PriorityDonut';
 import { StatCard } from '@/components/StatCard';
+import { StreakCalendar } from '@/components/StreakCalendar';
 import { Todo } from '@/types/todo';
 
 export default function App() {
@@ -163,7 +163,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-white">
       <header className="border-b border-zinc-900 bg-black/80 backdrop-blur sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="px-4 md:px-16 mx-auto py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-lg bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/20">
               <CheckCircle2 className="w-5 h-5 text-black" />
@@ -181,7 +181,7 @@ export default function App() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="px-4 md:px-16 mx-auto py-6">
         <Tabs value={tab} onValueChange={setTab}>
           <TabsList className="bg-zinc-900/80 backdrop-blur-md border border-zinc-800/80">
             <TabsTrigger value="dashboard" className="data-[state=active]:bg-green-500 data-[state=active]:text-slate-900"><LayoutDashboard className="w-4 h-4 mr-1.5" />Dashboard</TabsTrigger>
@@ -270,24 +270,45 @@ export default function App() {
               <StatCard icon={TimerIcon} label="Actual Time" value={`${visibleTodos.reduce((s, t) => s + (t.actualTime || 0), 0)}m`} color="#10b981" />
               <StatCard icon={Target} label="Avg per Task" value={`${visibleTodos.length ? Math.round(visibleTodos.reduce((s, t) => s + (t.actualTime || 0), 0) / visibleTodos.length) : 0}m`} color="#f97316" />
             </div>
-            <Card className="bg-gradient-to-b from-zinc-900/80 to-black border-zinc-800 shadow-2xl">
-              <CardHeader><CardTitle className="text-green-400 text-base">Category Performance</CardTitle></CardHeader>
-              <CardContent>
-                <div style={{ width: '100%', height: 280 }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={state.categories.map(c => ({ name: c, completed: visibleTodos.filter(t => t.category === c && t.status === 'completed').length, pending: visibleTodos.filter(t => t.category === c && t.status !== 'completed').length }))}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#2d5a5a" />
-                      <XAxis dataKey="name" tick={{ fill: '#d1d5db', fontSize: 11 }} />
-                      <YAxis tick={{ fill: '#d1d5db', fontSize: 11 }} />
-                      <RTooltip contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #10b981', borderRadius: 6 }} />
-                      <Legend wrapperStyle={{ fontSize: 11 }} />
-                      <Bar dataKey="completed" fill="#10b981" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="pending" fill="#64748b" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Card className="bg-gradient-to-b from-zinc-900/80 to-black border-zinc-800 shadow-2xl">
+                <CardHeader><CardTitle className="text-green-400 text-base flex items-center gap-2"><Flame className="w-4 h-4" />Streak Progress</CardTitle></CardHeader>
+                <CardContent><StreakCalendar todos={visibleTodos} /></CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-b from-zinc-900/80 to-black border-zinc-800 shadow-2xl">
+                <CardHeader><CardTitle className="text-green-400 text-base flex items-center gap-2"><BarChart3 className="w-4 h-4" />Category Performance</CardTitle></CardHeader>
+                <CardContent>
+                  <div style={{ width: '100%', height: 280 }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={state.categories.map(c => ({ name: c, completed: visibleTodos.filter(t => t.category === c && t.status === 'completed').length, pending: visibleTodos.filter(t => t.category === c && t.status !== 'completed').length }))}>
+                        <defs>
+                          <linearGradient id="barGradientDone" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#10b981" stopOpacity={0.8} />
+                            <stop offset="100%" stopColor="#064e3b" stopOpacity={0.3} />
+                          </linearGradient>
+                          <linearGradient id="barGradientPending" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#3182f6" stopOpacity={0.8} />
+                            <stop offset="100%" stopColor="#1e3a8a" stopOpacity={0.3} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+                        <XAxis dataKey="name" tick={{ fill: '#a1a1aa', fontSize: 11 }} axisLine={false} tickLine={false} dy={10} />
+                        <YAxis tick={{ fill: '#a1a1aa', fontSize: 11 }} axisLine={false} tickLine={false} />
+                        <RTooltip
+                          cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                          contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: 8, fontSize: 12, color: '#fff' }}
+                          itemStyle={{ padding: '2px 0' }}
+                        />
+                        <Legend wrapperStyle={{ fontSize: 11, paddingTop: 20 }} />
+                        <Bar dataKey="completed" name="Done" fill="url(#barGradientDone)" radius={[6, 6, 0, 0]} barSize={24} />
+                        <Bar dataKey="pending" name="In Queue" fill="url(#barGradientPending)" radius={[6, 6, 0, 0]} barSize={24} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="settings" className="mt-6 space-y-4 max-w-2xl">

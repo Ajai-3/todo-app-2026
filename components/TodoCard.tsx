@@ -45,7 +45,9 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
         <div
           className="absolute inset-0 pointer-events-none z-0"
           style={{
-            background: `linear-gradient(145deg, ${pri.color}60 0%, rgba(34, 197, 94, 0.25) 45%, ${statusColor}50 100%)`
+            border: `1px solid ${statusColor}`,
+            borderRadius: '12px',
+            background: `linear-gradient(145deg, ${pri.color}60 0%, rgba(0, 0, 0, 0.25) 45%, ${statusColor}50 100%)`
           }}
         />
         <CardContent className="p-4 space-y-3 relative z-10">

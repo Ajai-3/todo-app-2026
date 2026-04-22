@@ -10,7 +10,13 @@ interface StatCardProps {
 
 export function StatCard({ icon: Icon, label, value, sub, color = '#10b981' }: StatCardProps) {
   return (
-    <Card className="bg-zinc-950 border-zinc-800 shadow-xl overflow-hidden relative">
+    <Card className="bg-zinc-950 border-zinc-800 shadow-xl overflow-hidden relative group">
+      {/* Premium Shimmer/Flare Effect */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 w-[40%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"
+          style={{ animation: 'shimmer 4s infinite ease-in-out' }} />
+      </div>
+
       <div className="absolute inset-0 z-0" style={{ backgroundImage: `radial-gradient(${color} 1.5px, transparent 1.5px)`, backgroundSize: '14px 14px', opacity: 0.3 }} />
       <div className="absolute inset-0 z-0" style={{ background: `linear-gradient(135deg, ${color}25 0%, rgba(9, 9, 11, 0.8) 50%, rgba(0, 0, 0, 1) 100%)` }} />
       <CardContent className="p-4 relative z-10">
