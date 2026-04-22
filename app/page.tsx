@@ -3,8 +3,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { format, subDays, startOfDay, isBefore, parseISO, differenceInDays } from 'date-fns';
 import { toast } from 'sonner';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip as RTooltip, Legend 
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip as RTooltip, Legend
 } from 'recharts';
 import {
   Plus, Trash2, Edit3, CheckCircle2, Clock,
@@ -74,7 +74,7 @@ export default function App() {
 
   const filtered = useMemo(() => {
     return visibleTodos.filter(t => {
-      if (search && !(t.title + ' ' + (t.description||'')).toLowerCase().includes(search.toLowerCase())) return false;
+      if (search && !(t.title + ' ' + (t.description || '')).toLowerCase().includes(search.toLowerCase())) return false;
       if (filterPriority !== 'all' && t.priority !== filterPriority) return false;
       if (filterCategory !== 'all' && t.category !== filterCategory) return false;
       return true;
@@ -199,18 +199,19 @@ export default function App() {
               <StatCard icon={Flame} label="Streak" value={`${stats.streak}d`} sub="keep it up!" color="#eab308" />
             </div>
 
-            <Card className="bg-[#1a3a3a] border-emerald-900/50">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-emerald-400 text-base flex items-center gap-2"><Flame className="w-4 h-4" />Productivity Heatmap (Last 12 weeks)</CardTitle>
-              </CardHeader>
-              <CardContent><Heatmap todos={visibleTodos} /></CardContent>
-            </Card>
+            <div className="grid lg:grid-cols-3 md:grid-cols-1 gap-4">
+              <Card className="bg-[#1a3a3a] border-emerald-900/50">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-emerald-400 text-base flex items-center gap-2"><Flame className="w-4 h-4" />Productivity Heatmap</CardTitle>
+                </CardHeader>
+                <CardContent><Heatmap todos={visibleTodos} /></CardContent>
+              </Card>
 
-            <div className="grid md:grid-cols-2 gap-4">
               <Card className="bg-[#1a3a3a] border-emerald-900/50">
                 <CardHeader className="pb-2"><CardTitle className="text-emerald-400 text-base flex items-center gap-2"><Target className="w-4 h-4" />Productivity Dimensions</CardTitle></CardHeader>
                 <CardContent><SpiderGraph todos={visibleTodos} /></CardContent>
               </Card>
+
               <Card className="bg-[#1a3a3a] border-emerald-900/50">
                 <CardHeader className="pb-2"><CardTitle className="text-emerald-400 text-base flex items-center gap-2"><BarChart3 className="w-4 h-4" />Priority Breakdown</CardTitle></CardHeader>
                 <CardContent><PriorityDonut todos={visibleTodos} /></CardContent>
@@ -265,9 +266,9 @@ export default function App() {
 
           <TabsContent value="analytics" className="mt-6 space-y-4">
             <div className="grid md:grid-cols-3 gap-3">
-              <StatCard icon={Clock} label="Est. Time Total" value={`${visibleTodos.reduce((s,t)=>s+(t.estimatedTime||0),0)}m`} color="#06b6d4" />
-              <StatCard icon={TimerIcon} label="Actual Time" value={`${visibleTodos.reduce((s,t)=>s+(t.actualTime||0),0)}m`} color="#10b981" />
-              <StatCard icon={Target} label="Avg per Task" value={`${visibleTodos.length ? Math.round(visibleTodos.reduce((s,t)=>s+(t.actualTime||0),0)/visibleTodos.length) : 0}m`} color="#f97316" />
+              <StatCard icon={Clock} label="Est. Time Total" value={`${visibleTodos.reduce((s, t) => s + (t.estimatedTime || 0), 0)}m`} color="#06b6d4" />
+              <StatCard icon={TimerIcon} label="Actual Time" value={`${visibleTodos.reduce((s, t) => s + (t.actualTime || 0), 0)}m`} color="#10b981" />
+              <StatCard icon={Target} label="Avg per Task" value={`${visibleTodos.length ? Math.round(visibleTodos.reduce((s, t) => s + (t.actualTime || 0), 0) / visibleTodos.length) : 0}m`} color="#f97316" />
             </div>
             <Card className="bg-[#1a3a3a] border-emerald-900/50">
               <CardHeader><CardTitle className="text-emerald-400 text-base">Category Performance</CardTitle></CardHeader>
@@ -280,8 +281,8 @@ export default function App() {
                       <YAxis tick={{ fill: '#d1d5db', fontSize: 11 }} />
                       <RTooltip contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #10b981', borderRadius: 6 }} />
                       <Legend wrapperStyle={{ fontSize: 11 }} />
-                      <Bar dataKey="completed" fill="#10b981" radius={[4,4,0,0]} />
-                      <Bar dataKey="pending" fill="#64748b" radius={[4,4,0,0]} />
+                      <Bar dataKey="completed" fill="#10b981" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="pending" fill="#64748b" radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -298,7 +299,7 @@ export default function App() {
                   <div key={t.id} className="flex items-center justify-between p-3 rounded-md bg-[#0f172a] border border-emerald-900">
                     <div>
                       <div className="font-medium text-sm">{t.title}</div>
-                      <div className="text-xs text-slate-400">Repeats: {(t.recurrencePattern?.days || []).map((d:string) => WEEK_DAY_SHORT[d]).join(', ')}</div>
+                      <div className="text-xs text-slate-400">Repeats: {(t.recurrencePattern?.days || []).map((d: string) => WEEK_DAY_SHORT[d]).join(', ')}</div>
                     </div>
                     <div className="flex gap-1">
                       <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => openEdit(t)}><Edit3 className="w-3.5 h-3.5" /></Button>
@@ -328,7 +329,7 @@ export default function App() {
 
       <TodoForm open={formOpen} onOpenChange={setFormOpen} initial={editing} categories={state.categories} onSave={saveTodo} />
 
-      <Dialog open={clearDialogOpen} onOpenChange={(o) => { setClearDialogOpen(o); if(!o) setConfirmText('') }}>
+      <Dialog open={clearDialogOpen} onOpenChange={(o) => { setClearDialogOpen(o); if (!o) setConfirmText('') }}>
         <DialogContent className="bg-[#1a3a3a] border-red-900">
           <DialogHeader>
             <DialogTitle className="text-red-400 flex items-center gap-2"><AlertTriangle className="w-5 h-5" />Clear All Data?</DialogTitle>
