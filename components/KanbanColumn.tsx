@@ -27,7 +27,7 @@ export function KanbanColumn({ col, updateTodo, deleteTodo, openEdit }: KanbanCo
           <Badge variant="outline" className="text-[10px]">{col.items.length}</Badge>
         </div>
       </div>
-      <div ref={setNodeRef} className={`space-y-2 min-h-[200px] p-2 rounded-lg bg-[#0f172a]/50 border transition ${isOver ? 'border-emerald-400 bg-emerald-900/10' : 'border-emerald-900/30'}`}>
+      <div ref={setNodeRef} className={`space-y-2 min-h-[200px] p-2 rounded-lg bg-[#0f172a]/50 border transition ${isOver ? 'border-green-400 bg-green-900/10' : 'border-green-900/30'}`}>
         {col.items.length === 0 ? (
           <div className="text-center py-8 text-slate-600 text-xs">Drop here</div>
         ) : col.items.map(t => <TodoCard key={t.id} todo={t} onUpdate={updateTodo} onDelete={deleteTodo} onEdit={openEdit} draggable />)}

@@ -1,4 +1,4 @@
-export const LS_KEY = 'emerald_todo_app_v1';
+export const LS_KEY = 'green_todo_app_v1';
 
 export const PRIORITIES = [
   { value: 'urgent', label: 'Urgent', color: '#dc2626' },

@@ -10,7 +10,7 @@ interface StatCardProps {
 
 export function StatCard({ icon: Icon, label, value, sub, color = '#10b981' }: StatCardProps) {
   return (
-    <Card className="bg-[#1a3a3a] border-emerald-900/50">
+    <Card className="bg-[#1a3a3a] border-green-900/50">
       <CardContent className="p-4">
         <div className="flex items-center justify-between">
           <div>

@@ -56,45 +56,45 @@ export function TodoForm({ open, onOpenChange, initial, categories, onSave }: To
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg bg-[#1a3a3a] border-emerald-900 max-h-[90vh] overflow-y-auto scrollbar-thin">
+      <DialogContent className="max-w-lg bg-[#1a3a3a] border-green-900 max-h-[90vh] overflow-y-auto scrollbar-thin">
         <DialogHeader>
-          <DialogTitle className="text-emerald-400">{initial ? 'Edit Todo' : 'Create New Todo'}</DialogTitle>
+          <DialogTitle className="text-green-400">{initial ? 'Edit Todo' : 'Create New Todo'}</DialogTitle>
           <DialogDescription>Fill in task details. Recurring tasks auto-appear on scheduled days.</DialogDescription>
         </DialogHeader>
         <div className="space-y-3">
-          <div><Label>Title *</Label><Input value={form.title} onChange={e => setForm({...form, title: e.target.value})} className="bg-[#0f172a] border-emerald-900" /></div>
-          <div><Label>Description</Label><Textarea rows={2} value={form.description || ''} onChange={e => setForm({...form, description: e.target.value})} className="bg-[#0f172a] border-emerald-900" /></div>
+          <div><Label>Title *</Label><Input value={form.title} onChange={e => setForm({...form, title: e.target.value})} className="bg-[#0f172a] border-green-900" /></div>
+          <div><Label>Description</Label><Textarea rows={2} value={form.description || ''} onChange={e => setForm({...form, description: e.target.value})} className="bg-[#0f172a] border-green-900" /></div>
           <div className="grid grid-cols-2 gap-3">
             <div><Label>Priority</Label>
               <Select value={form.priority} onValueChange={(v: Priority) => setForm({...form, priority: v})}>
-                <SelectTrigger className="bg-[#0f172a] border-emerald-900"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="bg-[#0f172a] border-green-900"><SelectValue /></SelectTrigger>
                 <SelectContent>{PRIORITIES.map(p => <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Category</Label>
               <Select value={form.category} onValueChange={v => setForm({...form, category: v})}>
-                <SelectTrigger className="bg-[#0f172a] border-emerald-900"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="bg-[#0f172a] border-green-900"><SelectValue /></SelectTrigger>
                 <SelectContent>{categories.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
               </Select>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div><Label>Due Date</Label><Input type="date" value={form.dueDate.slice(0,10)} onChange={e => setForm({...form, dueDate: e.target.value})} className="bg-[#0f172a] border-emerald-900" /></div>
-            <div><Label>Estimated (min)</Label><Input type="number" min="0" value={form.estimatedTime} onChange={e => setForm({...form, estimatedTime: parseInt(e.target.value)||0})} className="bg-[#0f172a] border-emerald-900" /></div>
+            <div><Label>Due Date</Label><Input type="date" value={form.dueDate.slice(0,10)} onChange={e => setForm({...form, dueDate: e.target.value})} className="bg-[#0f172a] border-green-900" /></div>
+            <div><Label>Estimated (min)</Label><Input type="number" min="0" value={form.estimatedTime} onChange={e => setForm({...form, estimatedTime: parseInt(e.target.value)||0})} className="bg-[#0f172a] border-green-900" /></div>
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-md bg-[#0f172a] border border-emerald-900">
-            <div className="flex items-center gap-2"><Repeat className="w-4 h-4 text-emerald-400" /><Label className="cursor-pointer">Weekly Recurring Task</Label></div>
+          <div className="flex items-center justify-between p-3 rounded-md bg-[#0f172a] border border-green-900">
+            <div className="flex items-center gap-2"><Repeat className="w-4 h-4 text-green-400" /><Label className="cursor-pointer">Weekly Recurring Task</Label></div>
             <Switch checked={form.isRecurring} onCheckedChange={c => setForm({...form, isRecurring: c})} />
           </div>
 
           {form.isRecurring && (
-            <div className="p-3 rounded-md bg-[#0f172a] border border-emerald-900 space-y-2">
+            <div className="p-3 rounded-md bg-[#0f172a] border border-green-900 space-y-2">
               <Label className="text-xs text-slate-400">Repeat on days:</Label>
               <div className="flex flex-wrap gap-1">
                 {WEEK_DAYS.map(d => (
                   <button key={d} type="button" onClick={() => toggleDay(d)}
-                    className={`text-xs px-2.5 py-1 rounded-md border transition ${form.recurrencePattern?.days?.includes(d) ? 'bg-emerald-500 text-slate-900 border-emerald-500' : 'bg-transparent border-emerald-900 text-slate-400 hover:border-emerald-500'}`}>
+                    className={`text-xs px-2.5 py-1 rounded-md border transition ${form.recurrencePattern?.days?.includes(d) ? 'bg-green-500 text-slate-900 border-green-500' : 'bg-transparent border-green-900 text-slate-400 hover:border-green-500'}`}>
                     {WEEK_DAY_SHORT[d]}
                   </button>
                 ))}
@@ -103,10 +103,10 @@ export function TodoForm({ open, onOpenChange, initial, categories, onSave }: To
           )}
 
           {/* Subtasks */}
-          <div className="p-3 rounded-md bg-[#0f172a] border border-emerald-900 space-y-2">
+          <div className="p-3 rounded-md bg-[#0f172a] border border-green-900 space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-xs text-slate-400">Subtasks ({(form.subtasks || []).length})</Label>
-              <Button type="button" size="sm" variant="ghost" className="h-6 text-xs text-emerald-400 hover:text-emerald-300" onClick={() => setForm({ ...form, subtasks: [...(form.subtasks || []), { id: uuidv4(), title: '', completed: false }] })}>
+              <Button type="button" size="sm" variant="ghost" className="h-6 text-xs text-green-400 hover:text-green-300" onClick={() => setForm({ ...form, subtasks: [...(form.subtasks || []), { id: uuidv4(), title: '', completed: false }] })}>
                 <Plus className="w-3 h-3 mr-1" /> Add subtask
               </Button>
             </div>
@@ -117,7 +117,7 @@ export function TodoForm({ open, onOpenChange, initial, categories, onSave }: To
                 }} />
                 <Input value={st.title} placeholder="Subtask title" onChange={e => {
                   const subs = [...(form.subtasks || [])]; subs[idx] = { ...st, title: e.target.value }; setForm({ ...form, subtasks: subs });
-                }} className="bg-[#1a3a3a] border-emerald-900 h-8 text-sm" />
+                }} className="bg-[#1a3a3a] border-green-900 h-8 text-sm" />
                 <Button type="button" size="icon" variant="ghost" className="h-7 w-7 text-red-400" onClick={() => setForm({ ...form, subtasks: (form.subtasks || []).filter(s => s.id !== st.id) })}>
                   <X className="w-3 h-3" />
                 </Button>
@@ -127,7 +127,7 @@ export function TodoForm({ open, onOpenChange, initial, categories, onSave }: To
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={save} className="bg-emerald-500 hover:bg-emerald-600 text-slate-900">{initial ? 'Update' : 'Create'}</Button>
+          <Button onClick={save} className="bg-green-500 hover:bg-green-600 text-slate-900">{initial ? 'Update' : 'Create'}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

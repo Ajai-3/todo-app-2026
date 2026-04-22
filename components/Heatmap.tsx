@@ -42,7 +42,7 @@ export function Heatmap({ todos }: { todos: Todo[] }) {
             {week.map(cell => (
               <div key={cell.key}
                 title={`${cell.count} tasks completed on ${format(cell.date, 'MMM d, yyyy')}`}
-                className="w-4 h-4 rounded-sm hover:ring-2 hover:ring-emerald-400 cursor-pointer transition"
+                className="w-4 h-4 rounded-sm hover:ring-2 hover:ring-green-400 cursor-pointer transition"
                 style={{ backgroundColor: getColor(cell.count) }} />
             ))}
           </div>

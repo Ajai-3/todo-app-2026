@@ -57,9 +57,9 @@ export function TodoTimer({ todo, onUpdate }: TodoTimerProps) {
   };
 
   return (
-    <div className={`flex items-center gap-2 rounded-md px-2 py-1 bg-[#0f172a] border border-emerald-900 ${todo.timerActive ? 'timer-pulse' : ''}`}>
-      <TimerIcon className="w-3.5 h-3.5 text-emerald-400" />
-      <span className="font-mono text-sm text-emerald-300 tabular-nums">{formatTimer(totalMs)}</span>
+    <div className={`flex items-center gap-2 rounded-md px-2 py-1 bg-[#0f172a] border border-green-900 ${todo.timerActive ? 'timer-pulse' : ''}`}>
+      <TimerIcon className="w-3.5 h-3.5 text-green-400" />
+      <span className="font-mono text-sm text-green-300 tabular-nums">{formatTimer(totalMs)}</span>
       {!todo.timerActive ? (
         <Button size="icon" variant="ghost" className="h-6 w-6" onClick={start}><Play className="w-3 h-3" /></Button>
       ) : (
