@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { PRIORITIES, STATUSES } from '@/components/constants';
 import { TodoTimer } from '@/components/TodoTimer';
-import { Todo } from '@/types/todo';
+import { Todo, Status } from '@/types/todo';
 import { useSound } from '@/context/SoundContext';
 
 interface TodoCardProps {
@@ -42,14 +42,14 @@ export function TodoCard({ todo, onUpdate, onDelete, onEdit, draggable = false }
     if (isNowCompleted) playComplete();
     onUpdate({
       ...todo,
-      status: isNowCompleted ? 'completed' : 'pending',
+      status: (isNowCompleted ? 'completed' : 'pending') as Status,
       completedAt: isNowCompleted ? new Date().toISOString() : null
     });
   };
 
   const updateStatus = (v: string) => {
     if (v === 'completed' && todo.status !== 'completed') playComplete();
-    onUpdate({ ...todo, status: v, completedAt: v === 'completed' ? new Date().toISOString() : todo.completedAt });
+    onUpdate({ ...todo, status: v as Status, completedAt: v === 'completed' ? new Date().toISOString() : todo.completedAt });
   };
 
   return (
