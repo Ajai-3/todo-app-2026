@@ -2,7 +2,7 @@ import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 
 export const metadata = {
-  title: 'Green Todo — Productivity Dashboard',
+  title: 'Todo — Productivity Dashboard',
   description: 'Powerful local-first todo app with heatmaps, spider graphs, timers and recurring tasks',
 }
 

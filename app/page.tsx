@@ -169,7 +169,7 @@ export default function App() {
               <CheckCircle2 className="w-5 h-5 text-black" />
             </div>
             <div>
-              <div className="font-bold text-lg text-green-400 leading-none">Green Todo</div>
+              <div className="font-bold text-lg text-green-400 leading-none">Todo</div>
               <div className="text-[10px] text-zinc-500">Local-first • Offline-ready</div>
             </div>
           </div>
