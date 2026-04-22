@@ -331,17 +331,12 @@ export default function App() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-b from-zinc-900/80 to-black border-zinc-800 shadow-2xl">
-              <CardHeader><CardTitle className="text-green-400 text-base">Data Management</CardTitle></CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex flex-wrap gap-2">
-                  <Button onClick={exportData} variant="outline" className="border-green-700"><Download className="w-4 h-4 mr-1" />Export JSON</Button>
-                  <input type="file" accept="application/json" ref={fileInputRef} onChange={importData} className="hidden" />
-                  <Button onClick={() => fileInputRef.current?.click()} variant="outline" className="border-green-700"><Upload className="w-4 h-4 mr-1" />Import JSON</Button>
-                </div>
-                <div className="pt-3 border-t border-zinc-800/80">
-                  <Button onClick={() => setClearDialogOpen(true)} variant="destructive" className="bg-red-900/50 hover:bg-red-900 border border-red-700"><Trash2 className="w-4 h-4 mr-1" />Clear All Data</Button>
-                </div>
+            <Card className="bg-gradient-to-b from-zinc-900/80 to-black border-zinc-800 shadow-2xl mt-4">
+              <CardHeader><CardTitle className="text-red-400 text-base flex items-center gap-2"><Trash2 className="w-4 h-4" />Danger Zone</CardTitle></CardHeader>
+              <CardContent>
+                <Button onClick={() => setClearDialogOpen(true)} variant="destructive" className="bg-red-900/40 hover:bg-red-900 border border-red-800 transition-all text-xs">
+                  <Trash2 className="w-3.5 h-3.5 mr-1.5" />Clear All System Data
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>

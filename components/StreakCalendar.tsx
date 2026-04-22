@@ -1,5 +1,5 @@
 import React from 'react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, startOfWeek, endOfWeek, parseISO } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, startOfWeek, endOfWeek, parseISO, isBefore, startOfDay } from 'date-fns';
 import { Flame, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Todo } from '@/types/todo';
 
@@ -32,16 +32,16 @@ export function StreakCalendar({ todos }: StreakCalendarProps) {
     const prevMonth = () => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
 
     return (
-        <div className="space-y-4 max-w-[280px] mx-auto">
+        <div className="space-y-4 w-full">
             <div className="flex items-center justify-between mb-2">
-                <h3 className="text-xs font-bold text-green-400 uppercase tracking-widest">{format(currentDate, 'MMM yyyy')}</h3>
-                <div className="flex gap-1">
-                    <button onClick={prevMonth} className="p-1 hover:bg-zinc-800 rounded-md text-slate-400 transition-colors"><ChevronLeft className="w-4 h-4" /></button>
-                    <button onClick={nextMonth} className="p-1 hover:bg-zinc-800 rounded-md text-slate-400 transition-colors"><ChevronRight className="w-4 h-4" /></button>
+                <h3 className="text-sm font-bold text-green-400 uppercase tracking-widest">{format(currentDate, 'MMMM yyyy')}</h3>
+                <div className="flex gap-2">
+                    <button onClick={prevMonth} className="p-1.5 hover:bg-zinc-800 rounded-md text-slate-400 transition-colors"><ChevronLeft className="w-4 h-4" /></button>
+                    <button onClick={nextMonth} className="p-1.5 hover:bg-zinc-800 rounded-md text-slate-400 transition-colors"><ChevronRight className="w-4 h-4" /></button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-7 gap-0.5 text-center">
+            <div className="grid grid-cols-7 gap-1 text-center">
                 {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => (
                     <div key={d} className="text-[9px] uppercase font-bold text-slate-600 py-1">{d}</div>
                 ))}
@@ -54,21 +54,21 @@ export function StreakCalendar({ todos }: StreakCalendarProps) {
                         <div
                             key={day.toISOString()}
                             className={`
-                                aspect-square flex flex-col items-center justify-center relative rounded-md transition-all
+                                h-12 flex flex-col items-center justify-center relative rounded-md transition-all
                                 ${!isCurrentMonth ? 'opacity-0 pointer-events-none' : 'opacity-100'}
-                                ${isToday ? 'bg-green-500/20 text-green-300 ring-1 ring-green-500/50' : 'bg-zinc-900/60'}
+                                ${isToday ? 'bg-green-500/20 text-green-300 ring-1 ring-green-500/50' : isBefore(day, startOfDay(new Date())) ? 'bg-zinc-950/40 opacity-40' : 'bg-zinc-900/60'}
                                 hover:bg-zinc-800
                             `}
                         >
-                            {/* Fire icon always behind the number */}
+                            {/* Fire icon always behind the number with gradient effect */}
                             {isStreak && (
                                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40 z-0">
-                                    <Flame className="w-6 h-6 text-orange-500 fill-orange-500 blur-[2px]" />
+                                    <Flame className="w-10 h-10 text-red-500 fill-red-500 blur-[2px]" />
                                 </div>
                             )}
                             {isStreak && (
                                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-                                    <Flame className="w-5 h-5 text-orange-500 fill-orange-500 filter drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
+                                    <Flame className="w-10 h-10 text-orange-500 fill-orange-400 filter drop-shadow-[0_0_12px_rgba(249,115,22,0.9)]" />
                                 </div>
                             )}
 
