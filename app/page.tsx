@@ -77,7 +77,17 @@ export default function App() {
   const visibleTodos = todos.filter(t => !t.isRecurring || t.parentRecurringId);
 
   const filtered = useMemo(() => {
+    const todayStr = format(new Date(), 'yyyy-MM-dd');
     return visibleTodos.filter(t => {
+      let isForToday = false;
+      if (t.dueDate) {
+        isForToday = format(parseISO(t.dueDate), 'yyyy-MM-dd') === todayStr;
+      } else if (t.createdAt) {
+        isForToday = format(parseISO(t.createdAt), 'yyyy-MM-dd') === todayStr;
+      }
+      
+      if (!isForToday) return false;
+
       if (search && !(t.title + ' ' + (t.description || '')).toLowerCase().includes(search.toLowerCase())) return false;
       if (filterPriority !== 'all' && t.priority !== filterPriority) return false;
       if (filterCategory !== 'all' && t.category !== filterCategory) return false;

@@ -23,10 +23,10 @@ export function Heatmap({ todos }: { todos: Todo[] }) {
 
   const getColor = (c: number) => {
     if (c === 0) return '#0b1f1f';
-    if (c <= 2) return '#34d399';
-    if (c <= 4) return '#10b981';
+    if (c <= 2) return '#064e3b';
+    if (c <= 4) return '#065f46';
     if (c <= 9) return '#059669';
-    return '#047857';
+    return '#10b981';
   };
 
   const weeks = [];
@@ -50,7 +50,7 @@ export function Heatmap({ todos }: { todos: Todo[] }) {
       </div>
       <div className="flex items-center gap-2 text-[10px] text-slate-400 justify-end">
         <span>Less</span>
-        {['#1a3a3a', '#34d399', '#10b981', '#059669', '#047857'].map(c => <div key={c} className="w-3 h-3 rounded-sm" style={{ backgroundColor: c }} />)}
+        {['#0b1f1f', '#064e3b', '#065f46', '#059669', '#10b981'].map(c => <div key={c} className="w-3 h-3 rounded-sm" style={{ backgroundColor: c }} />)}
         <span>More</span>
       </div>
     </div>
